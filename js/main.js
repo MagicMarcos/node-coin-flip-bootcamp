@@ -1,11 +1,15 @@
-const coin = document.getElementById('coin');
-coin.addEventListener('click', fetchCoinFlip);
+const heads = document.getElementById('heads');
+heads.addEventListener('click', fetchCoinFlip);
 
-function fetchCoinFlip() {
-	fetch(`/api`)
+const tails = document.getElementById('tails');
+tails.addEventListener('click', fetchCoinFlip);
+
+function fetchCoinFlip(e) {
+	const flipChoice = e.target.value;
+	fetch(`/api?coinflip=${flipChoice}`)
 		.then(res => res.json())
-		.then(data => {
-			flip(data);
+		.then(result => {
+			flip(result);
 		})
 		.catch(err => console.log(err));
 }
@@ -14,12 +18,10 @@ function flip(result) {
 	coin.classList.remove('heads');
 	coin.classList.remove('tails');
 	setTimeout(() => {
-		if (result === 'heads') {
+		if (result.flipped === 'HEADS') {
 			coin.classList.add('heads');
-			console.log('it is head');
 		} else {
 			coin.classList.add('tails');
-			console.log('it is tails');
 		}
 	}, 100);
 }
